@@ -28,7 +28,7 @@ function Charity() {
 
   const switchStep = (e: any) => {
     // ToDo - add connection to smart contracts here
-    setStep(++step);
+    setStep(step + 1);
   };
 
   return (

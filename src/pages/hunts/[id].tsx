@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Fragment, ReactNode, useState } from "react";
 import { useRouter } from "next/router";
 import { truncateAddress } from "../../utils";
@@ -32,7 +33,7 @@ function Hunt() {
 
   const switchStep = (e: any) => {
     // ToDo - add connection to smart contracts here
-    setStep(++step);
+    setStep(step + 1);
   };
 
   return (

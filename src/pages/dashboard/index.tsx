@@ -95,12 +95,7 @@ function Dashboard() {
                   <td>${item.bounty}</td>
                   <td>${item.total}</td>
                   <td>
-                    <button
-                      onClick={(event) => handleClick(event, `/hunts/${i}`)}
-                      className="btn btn-outline"
-                    >
-                      View
-                    </button>
+                    <button className="btn btn-outline">View</button>
                   </td>
                 </tr>
               );
