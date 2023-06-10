@@ -8,12 +8,14 @@ import { useEffect, useState } from "react";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, optimism, polygon } from "wagmi/chains";
 import "../styles/globals.css";
-import type { AppProps } from 'next/app';
-import Layout from './Layout';
+import type { AppProps } from "next/app";
+import Layout from "./Layout";
 
 // 1. Get projectID at https://cloud.walletconnect.com
 if (!process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID) {
-  throw new Error("You need to provide NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID env variable");
+  throw new Error(
+    "You need to provide NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID env variable"
+  );
 }
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID;
 
