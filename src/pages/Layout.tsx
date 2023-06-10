@@ -4,6 +4,10 @@ import { Fragment, ReactNode, useState } from "react";
 import { Web3Button, Web3NetworkSwitch } from "@web3modal/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import CharityID from "../contracts/ABI/CharityID.json";
+import { config } from "../config";
+import { ethers } from "ethers";
+import { useEffect } from "react";
 
 // const inter = Inter({ subsets: ['latin'] })
 
@@ -19,6 +23,30 @@ interface ContainerProps {
 
 export default function Layout({ children, className }: ContainerProps) {
   const router = useRouter();
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+  const signer = provider.getSigner();
+
+  const charityIdContract = new ethers.Contract(
+    config.contracts.charityId,
+    CharityID.abi,
+    signer
+  );
+
+  const [charityId, setCharityId] = useState();
+
+  console.log("charityId: ", charityId);
+
+  useEffect(() => {
+    async function getCharityId() {
+      const userAddress = await signer.getAddress();
+      const charityId = await charityIdContract.ids(userAddress);
+      setCharityId(charityId);
+    }
+
+    getCharityId();
+  }, []); // add dependencies here if needed
 
   const handleClick = (e: any, href) => {
     e.preventDefault();
@@ -52,30 +80,39 @@ export default function Layout({ children, className }: ContainerProps) {
             <ul className="menu menu-horizontal gap-2">
               <li>
                 <Link href="/">
-                  <a onClick={(event) => handleClick(event, "/")}>Home</a>
+                  <a onClick={event => handleClick(event, "/")}>Home</a>
                 </Link>
               </li>
               <li>
                 <Link href="/charities">
-                  <a onClick={(event) => handleClick(event, "/charities")}>
+                  <a onClick={event => handleClick(event, "/charities")}>
                     Charities
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href="/hunt">
-                  <a onClick={(event) => handleClick(event, "/hunt")}>
+                  <a onClick={event => handleClick(event, "/hunt")}>
                     Treasure Hunts
                   </a>
                 </Link>
               </li>
               <li>
                 <Link href="/dashboard" className="mr-2">
-                  <a onClick={(event) => handleClick(event, "/dashboard")}>
+                  <a onClick={event => handleClick(event, "/dashboard")}>
                     Dashboard
                   </a>
                 </Link>
               </li>
+              {charityId != 0x00 && (
+                <li>
+                  <Link href="/dashboard">
+                    <a onClick={event => handleClick(event, "/dashboard")}>
+                      Create a Treasure Hunt
+                    </a>
+                  </Link>
+                </li>
+              )}
 
               <Web3Button icon="show" label="Connect Wallet" balance="show" />
             </ul>
@@ -88,26 +125,26 @@ export default function Layout({ children, className }: ContainerProps) {
         <ul className="menu p-4 w-80 h-full bg-base-200 gap-2">
           <li>
             <Link href="/">
-              <a onClick={(event) => handleClick(event, "/")}>Home</a>
+              <a onClick={event => handleClick(event, "/")}>Home</a>
             </Link>
           </li>
           <li>
             <Link href="/charities">
-              <a onClick={(event) => handleClick(event, "/charities")}>
+              <a onClick={event => handleClick(event, "/charities")}>
                 Charities
               </a>
             </Link>
           </li>
           <li>
             <Link href="/hunt">
-              <a onClick={(event) => handleClick(event, "/hunt")}>
+              <a onClick={event => handleClick(event, "/hunt")}>
                 Treasure Hunts
               </a>
             </Link>
           </li>
           <li>
             <Link href="/dashboard" className="mr-2">
-              <a onClick={(event) => handleClick(event, "/dashboard")}>
+              <a onClick={event => handleClick(event, "/dashboard")}>
                 Dashboard
               </a>
             </Link>
