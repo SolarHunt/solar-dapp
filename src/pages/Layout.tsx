@@ -97,21 +97,24 @@ export default function Layout({ children, className }: ContainerProps) {
                   </a>
                 </Link>
               </li>
-              <li>
-                <Link href="/dashboard" className="mr-2">
-                  <a onClick={event => handleClick(event, "/dashboard")}>
-                    Dashboard
-                  </a>
-                </Link>
-              </li>
+
               {charityId != 0x00 && (
-                <li>
-                  <Link href="/dashboard">
-                    <a onClick={event => handleClick(event, "/dashboard")}>
-                      Create a Treasure Hunt
-                    </a>
-                  </Link>
-                </li>
+                <>
+                  <li>
+                    <Link href="/dashboard" className="mr-2">
+                      <a onClick={event => handleClick(event, "/dashboard")}>
+                        Dashboard
+                      </a>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/dashboard">
+                      <a onClick={event => handleClick(event, "/treasure")}>
+                        Create a Treasure Hunt
+                      </a>
+                    </Link>
+                  </li>
+                </>
               )}
 
               <Web3Button icon="show" label="Connect Wallet" balance="show" />
