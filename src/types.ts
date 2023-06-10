@@ -1,5 +1,5 @@
-import { BigNumber } from 'ethers';
-import { Connector } from 'wagmi';
+import { BigNumber } from "ethers";
+import { Connector } from "wagmi";
 
 export type IUser = {
   id: string;
@@ -37,7 +37,7 @@ export type IAccount = {
   isReconnecting: boolean;
   isConnected: boolean;
   isDisconnected: boolean;
-  status: 'connecting' | 'reconnecting' | 'connected' | 'disconnected';
+  status: "connecting" | "reconnecting" | "connected" | "disconnected";
 };
 
 // TODO: add the rest of the fields
@@ -117,17 +117,17 @@ export type IReviewDetails = {
 };
 
 export enum ServiceStatusEnum {
-  Opened = 'Opened',
-  Confirmed = 'Confirmed',
-  Finished = 'Finished',
-  Cancelled = 'Cancelled',
-  Uncompleted = 'Uncompleted',
+  Opened = "Opened",
+  Confirmed = "Confirmed",
+  Finished = "Finished",
+  Cancelled = "Cancelled",
+  Uncompleted = "Uncompleted",
 }
 
 export enum ProposalStatusEnum {
-  Pending = 'Pending',
-  Validated = 'Validated',
-  Rejected = 'Rejected',
+  Pending = "Pending",
+  Validated = "Validated",
+  Rejected = "Rejected",
 }
 
 export type IProposalDetails = {
@@ -175,15 +175,12 @@ export enum ProfileTypeEnum {
 }
 
 export enum PaymentTypeEnum {
-  Release = 'Release',
-  Reimburse = 'Reimburse',
+  Release = "Release",
+  Reimburse = "Reimburse",
 }
 
 export enum NetworkEnum {
-  LOCAL = 1337,
-  GOERLI = 5,
-  FUJI = 43113,
-  MUMBAI = 80001,
+  SEPOLIA = 11155111,
 }
 
 export type IToken = {

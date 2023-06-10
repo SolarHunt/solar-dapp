@@ -2,6 +2,11 @@
 import { Fragment, ReactNode, useState } from "react";
 import { useRouter } from "next/router";
 import { truncateAddress } from "../../utils";
+import TreasureHunt from "../../contracts/ABI/TreasureHunt.json";
+import CharityID from "../../contracts/ABI/CharityID.json";
+import { useProvider, useSigner } from "wagmi";
+import { ethers } from "ethers";
+import { config } from "../../config";
 
 const hunt = {
   charity: "Bingus Chairty",
@@ -27,13 +32,54 @@ function Hunt() {
     { address: "0xE0F05F319B99cF78f5ca4C96197a652B0FC88b5C", deposit: "99" },
     { address: "0xBA73115919e46F82fA990F8067d2905cB6FF3c60", deposit: "13" },
   ]);
+
   const [step, setStep] = useState(0);
+
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+
   const router = useRouter();
   const { id } = router.query;
 
-  const switchStep = (e: any) => {
-    // ToDo - add connection to smart contracts here
-    setStep(step + 1);
+  const switchStep = async (e: any) => {
+    try {
+      const treasureContract = new ethers.Contract(
+        config.contracts.treasureHunt,
+        TreasureHunt.abi,
+        signer
+      );
+
+      const charityIdContract = new ethers.Contract(
+        config.contracts.charityId,
+        CharityID.abi,
+        signer
+      );
+
+      const userAddress = await signer.getAddress();
+      // get the charity id link to the wallet address
+      const charityId = await charityIdContract.ids(userAddress);
+      console.log("charityId: ", charityId);
+
+      // Step 0
+      if (step == 0) {
+        const tx = await treasureContract.depositAmountToParticipate(1, {
+          value: 1,
+        });
+
+        if (tx) {
+          setStep(step + 1);
+        }
+      }
+      // Step 1
+      else if (step == 1) {
+        // Here you could call some function related to step 1
+        // If that function is successful, increment step
+        setStep(step + 1);
+      }
+      // Additional steps can be added here
+    } catch (error) {
+      console.error("Error in switchStep: ", error);
+    }
   };
 
   return (
@@ -117,7 +163,7 @@ function Hunt() {
                     <div className="form-control mt-6">
                       <button
                         className="btn btn-outline"
-                        onClick={(event) => switchStep(event)}
+                        onClick={event => switchStep(event)}
                       >
                         Deposit
                       </button>
@@ -163,7 +209,7 @@ function Hunt() {
                     <div className="form-control mt-6">
                       <button
                         className="btn btn-outline"
-                        onClick={(event) => switchStep(event)}
+                        onClick={event => switchStep(event)}
                       >
                         Unlock
                       </button>
@@ -200,7 +246,7 @@ function Hunt() {
                     <div className="form-control mt-6">
                       <button
                         className="btn btn-outline"
-                        onClick={(event) => switchStep(event)}
+                        onClick={event => switchStep(event)}
                       >
                         Withdraw
                       </button>
